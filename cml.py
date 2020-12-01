@@ -11,6 +11,7 @@ class CML:
 		self.eps = eps
 		if u0 is None:
 			u0 = lambda _: np.random.normal()
+		self.u0 = u0
 		self.index = {x: i for i, x in enumerate(L)}
 		self.N_index = [np.array([self.index[y] for y in N(x)], dtype=np.intp) for x in L]
 		self.u = np.array([u0(x) for x in L], dtype=np.float64)
@@ -18,6 +19,9 @@ class CML:
 	def step(self):
 		neighbors = np.array([self.f(self.u[ns]).sum()/ns.shape[0] for ns in self.N_index])
 		self.u = (1-self.eps)*self.f(self.u) + self.eps*neighbors
+
+	def reset(self):
+		self.u = np.array([self.u0(x) for x in self.L], dtype=np.float64)
 
 	@property 
 	def value(self):
