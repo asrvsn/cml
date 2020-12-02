@@ -81,3 +81,33 @@ ax.set_xlabel('Coupling constant $\\varepsilon$')
 fig.tight_layout()
 fig.savefig('logistic_eps_le.png', bbox_inches='tight', pad_inches=0)
 plt.show()
+
+''' MLE distribution ''' 
+
+T = 5
+t0 = 10
+
+r = 3.2
+eps_set = np.linspace(0.15, 0.25, 300)
+exponents = []
+for eps in eps_set:
+	print(f'eps: {eps}')
+	model = CML_logistic(n, r, eps=eps)
+	for _ in range(t0):
+		model.step()
+	term = np.zeros(n)
+	for _ in range(T):
+		jac = model.jacobian
+		Q, R = np.linalg.qr(jac, mode='complete')
+		term += np.log(np.abs(np.diag(R)[:n]))
+	term /= T
+	exponents.append(term.max())
+exponents = np.array(exponents)
+
+fig, ax = plt.subplots(figsize=(12, 5))
+sns.histplot(exponents, bins=20, ax=ax)
+ax.set_xlabel('Maximum Lyapunov exponent for $r \\in [0.15, 0.25]$')
+
+fig.tight_layout()
+fig.savefig('logistic_mle_dist.png', bbox_inches='tight', pad_inches=0)
+plt.show()
