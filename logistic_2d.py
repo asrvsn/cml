@@ -11,7 +11,7 @@ class CML_logistic(CML_2D):
 		u0 = lambda x: np.random.uniform()
 		super().__init__(f, n, eps, u0=u0)
 
-model = CML_logistic(40, 3.7, eps=0.005)
+model = CML_logistic(40, 3.9, eps=0.5)
 
 ''' Save as plot ''' 
 # fig, axs = plt.subplots(1, 4, figsize=(16, 4))
