@@ -42,6 +42,8 @@ spectra = np.array(spectra)
 fig, ax = plt.subplots(figsize=(12, 5))
 for i in range(spectra.shape[1]):
 	ax.scatter(r_set, spectra[:,i], color='blue', s=1)
+envelope = spectra.max(axis=1)
+ax.plot(r_set, envelope, color='black', alpha=0.5)
 ax.plot(r_set, np.zeros_like(r_set), color='black')
 ax.set_xlabel('Nonlinearity $r$')
 
@@ -71,6 +73,8 @@ spectra = np.array(spectra)
 fig, ax = plt.subplots(figsize=(12, 5))
 for i in range(spectra.shape[1]):
 	ax.scatter(eps_set, spectra[:,i], color='blue', s=1)
+envelope = spectra.max(axis=1)
+ax.plot(eps_set, envelope, color='black', alpha=0.5)
 ax.plot(eps_set, np.zeros_like(eps_set), color='black')
 ax.set_xlabel('Coupling constant $\\varepsilon$')
 
