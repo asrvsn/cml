@@ -119,7 +119,8 @@ if __name__ == '__main__':
 		model.step()
 
 	fig, ax = plt.subplots(figsize=(12, 6))
-	ax.contourf(model.T, 20, cmap='inferno_r')
+	ax.contourf(model.T, 20, cmap='inferno')
+	axs.invert_yaxis()
 	ax.axis('off')
 
 	fig.tight_layout()
@@ -137,7 +138,7 @@ if __name__ == '__main__':
 	''' Save as video ''' 
 	# from matplotlib.animation import FFMpegWriter
 
-	# writer = FFMpegWriter(fps=15, metadata={'title': 'rb_convectoin'})
+	# writer = FFMpegWriter(fps=15, metadata={'title': 'rb_convection'})
 	# fig, axs = plt.subplots(1, 2, figsize=(13, 4))
 
 	# with writer.saving(fig, 'rb_convection.mp4', dpi=100):
@@ -145,7 +146,8 @@ if __name__ == '__main__':
 	# 	for _ in tqdm(range(1000)):
 	# 		axs[0].clear()
 	# 		axs[1].clear()
-	# 		axs[0].contourf(model.T, 20, cmap='inferno_r')
+	# 		axs[0].contourf(model.T, 20, cmap='inferno')
+			# axs[0].invert_yaxis()
 	# 		axs[1].quiver(model.Vx, model.Vy)
 	# 		writer.grab_frame()
 	# 		model.step()

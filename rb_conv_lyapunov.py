@@ -20,12 +20,12 @@ if __name__ == '__main__':
 	eta = 0.3
 	kappa = 0.8
 
-	temp_rng = np.linspace(0, 10., 100)
+	temp_rng = np.linspace(0, 10.,100)
 
 	t0 = 150
 	tl = 10
-	n_perturb = 4
-	eps_perturb = 1e-3
+	n_perturb = 20
+	eps_perturb = 1e-1
 	k_exponents = m*n
 
 	spectra = []
@@ -39,16 +39,17 @@ if __name__ == '__main__':
 		for _ in range(n_perturb):
 			model_ = CML_convection((m, n), temp, nu, eta, kappa, c)
 			model_.T[:,:], model.Vx[:,:], model.Vy[:,:] = model.T[:,:], model.Vx[:,:], model.Vy[:,:]
-			model_.T += np.random.normal(size=(m, n), scale=eps_perturb)
+			model_.Vy += np.random.normal(size=(m, n), scale=eps_perturb)
+			model_.Vx += np.random.normal(size=(m, n), scale=eps_perturb)
 			perturbed.append(model_)
 
 		spectrum = np.zeros(k_exponents)
-		ds = np.vstack([(model_.T - model.T).ravel() for model_ in perturbed])
+		ds = np.vstack([(model_.Vy - model.Vy).ravel() for model_ in perturbed])
 		for _ in range(tl):
 			for model_ in perturbed:
 				model_.step()
 			model.step()
-			ds_ = np.vstack([(model_.T - model.T).ravel() for model_ in perturbed])
+			ds_ = np.vstack([(model_.Vy - model.Vy).ravel() for model_ in perturbed])
 			jac = np.linalg.lstsq(ds, ds_)[0]
 			Q, R = np.linalg.qr(jac, mode='complete')
 			spectrum += np.log(np.abs(np.diag(R)[:k_exponents]))
@@ -62,6 +63,7 @@ if __name__ == '__main__':
 	envelope = spectra.max(axis=1)
 	ax.plot(temp_rng, envelope, color='black', alpha=0.5)
 	ax.plot(temp_rng, np.zeros_like(temp_rng), color='black')
+	ax.set_ylim(ymin=-100)
 	ax.set_xlabel('External temperature $E$')
 
 	fig.tight_layout()
