@@ -102,50 +102,50 @@ class CML_convection:
 		self.Vx = np.random.normal(scale=1e-3, size=self.shape)
 		self.Vy = np.random.normal(scale=1e-3, size=self.shape)
 
-m, n = 25, 50
-c = 1.0
-temp = 1.0
-nu = 0.5
-eta = 0.3
-kappa = 0.8
-model = CML_convection((m, n), temp, nu, eta, kappa, c)
+if __name__ == '__main__':
+	m, n = 25, 50
+	c = 1.0
+	temp = 10.0
+	nu = 0.5
+	eta = 0.3
+	kappa = 0.8
+	model = CML_convection((m, n), temp, nu, eta, kappa, c)
 
-# pdb.set_trace()
+	# pdb.set_trace()
 
-''' Save as plot ''' 
+	''' Save as plot ''' 
 
-for _ in range(600):
-	model.step()
+	for _ in range(600):
+		model.step()
 
-# Double plot
-fig, axs = plt.subplots(1, 2, figsize=(12, 4))
-axs[0].contourf(model.T, 20, cmap='inferno_r')
-axs[1].quiver(model.Vx, model.Vy)
-axs[0].axis('off')
-axs[1].axis('off')
+	fig, ax = plt.subplots(figsize=(12, 6))
+	ax.contourf(model.T, 20, cmap='inferno_r')
+	ax.axis('off')
 
-# # Single plot
-# fig, ax = plt.subplots(figsize=(12, 6))
-# ax.contourf(model.T, 20, cmap='inferno_r')
-# ax.axis('off')
+	fig.tight_layout()
+	fig.savefig('rb_convection.png', bbox_inches='tight', pad_inches=0)
 
-fig.tight_layout()
-fig.savefig('rb_convection.png', bbox_inches='tight', pad_inches=0)
+	fig, ax = plt.subplots(figsize=(12, 6))
+	ax.quiver(model.Vx, model.Vy)
+	ax.axis('off')
 
-plt.show()
+	fig.tight_layout()
+	fig.savefig('rb_convection_field.png', bbox_inches='tight', pad_inches=0)
 
-''' Save as video ''' 
-# from matplotlib.animation import FFMpegWriter
+	plt.show()
 
-# writer = FFMpegWriter(fps=15, metadata={'title': 'rb_convectoin'})
-# fig, axs = plt.subplots(1, 2, figsize=(13, 4))
+	''' Save as video ''' 
+	# from matplotlib.animation import FFMpegWriter
 
-# with writer.saving(fig, 'rb_convection.mp4', dpi=100):
-# 	model.reset()
-# 	for _ in tqdm(range(1000)):
-# 		axs[0].clear()
-# 		axs[1].clear()
-# 		axs[0].contourf(model.T, 20, cmap='inferno_r')
-# 		axs[1].quiver(model.Vx, model.Vy)
-# 		writer.grab_frame()
-# 		model.step()
+	# writer = FFMpegWriter(fps=15, metadata={'title': 'rb_convectoin'})
+	# fig, axs = plt.subplots(1, 2, figsize=(13, 4))
+
+	# with writer.saving(fig, 'rb_convection.mp4', dpi=100):
+	# 	model.reset()
+	# 	for _ in tqdm(range(1000)):
+	# 		axs[0].clear()
+	# 		axs[1].clear()
+	# 		axs[0].contourf(model.T, 20, cmap='inferno_r')
+	# 		axs[1].quiver(model.Vx, model.Vy)
+	# 		writer.grab_frame()
+	# 		model.step()
