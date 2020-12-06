@@ -30,11 +30,11 @@ for r in r_set:
 	model = CML_logistic(n, r, eps=eps)
 	for _ in range(t0):
 		model.step()
-	term = np.zeros(n)
+	term = np.zeros(n**2)
 	for _ in range(T):
 		jac = model.jacobian
 		Q, R = np.linalg.qr(jac, mode='complete')
-		term += np.log(np.abs(np.diag(R)[:n]))
+		term += np.log(np.abs(np.diag(R)[:n**2]))
 	term /= T
 	spectra.append(term)
 spectra = np.array(spectra)

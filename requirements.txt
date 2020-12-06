@@ -1,3 +1,4 @@
 seaborn>=0.11.0
 colorcet
 tqdm
+jaxlib>=0.1.55
