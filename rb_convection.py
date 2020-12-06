@@ -120,7 +120,7 @@ if __name__ == '__main__':
 
 	fig, ax = plt.subplots(figsize=(12, 6))
 	ax.contourf(model.T, 20, cmap='inferno')
-	axs.invert_yaxis()
+	ax.invert_yaxis()
 	ax.axis('off')
 
 	fig.tight_layout()
