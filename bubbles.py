@@ -85,45 +85,70 @@ class CML_bubbles:
 		self.T[-1,:] = self.temp
 
 if __name__ == '__main__':
-	m, n = 40, 40
-	temp = 9.87
+	m, n = 48, 48
+	temp = 9.95
 	eps = 0.5
 	sigma = 0.1
 	alpha = 10
 	eta = 0.1
 	T_c = 10
 
-	model = CML_bubbles((m, n), temp, eps, sigma, alpha, eta, T_c)
-
 	# pdb.set_trace()
 
 	''' Save as plot ''' 
+	# model = CML_bubbles((m, n), temp, eps, sigma, alpha, eta, T_c)
 
-	fig, axs = plt.subplots(1, 3, figsize=(12, 6))
+	# fig, axs = plt.subplots(1, 3, figsize=(12, 6))
 
-	for _ in range(500):
-		model.step()
+	# for _ in range(500):
+	# 	model.step()
 
-	axs[0].contourf(model.T, 20, cmap='inferno')
-	axs[0].invert_yaxis()
-	axs[0].axis('off')
+	# axs[0].contourf(model.T, 20, cmap='inferno')
+	# axs[0].invert_yaxis()
+	# axs[0].axis('off')
 
-	for _ in range(500):
-		model.step()
+	# for _ in range(500):
+	# 	model.step()
 
-	axs[1].contourf(model.T, 20, cmap='inferno')
-	axs[1].invert_yaxis()
-	axs[1].axis('off')
+	# axs[1].contourf(model.T, 20, cmap='inferno')
+	# axs[1].invert_yaxis()
+	# axs[1].axis('off')
 
-	for _ in range(500):
-		model.step()
+	# for _ in range(500):
+	# 	model.step()
 
-	axs[2].contourf(model.T, 20, cmap='inferno')
-	axs[2].invert_yaxis()
-	axs[2].axis('off')
+	# axs[2].contourf(model.T, 20, cmap='inferno')
+	# axs[2].invert_yaxis()
+	# axs[2].axis('off')
+
+	# fig.tight_layout()
+	# fig.savefig('bubbles.png', bbox_inches='tight', pad_inches=0)
+
+	# plt.show()
+
+	''' Characteristic curve ''' 
+	t0 = 1000
+	tn = 100
+	k = 3
+	temp_rng = np.linspace(0, 11, 2)
+	data = []
+	for temp in tqdm(temp_rng):
+		model = CML_bubbles((m, n), temp, eps, sigma, alpha, eta, T_c)
+		for _ in range(t0):
+			model.step()
+		flux = 0.
+		for _ in range(tn):
+			flux += (model.T[-k] - temp).mean()
+			model.step()
+		flux /= tn
+		data.append(flux)
+	data = np.array(data)
+
+	fig, ax = plt.subplots(figsize=(12, 4))
+	ax.plot(temp_rng, data)
 
 	fig.tight_layout()
-	fig.savefig('bubbles.png', bbox_inches='tight', pad_inches=0)
+	fig.savefig('bubbles_curve.png', bbox_inches='tight', pad_inches=0)
 
 	plt.show()
 
